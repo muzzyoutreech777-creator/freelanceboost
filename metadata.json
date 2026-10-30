@@ -1,0 +1,6 @@
+{
+  "name": "FreelanceBoost",
+  "description": "AI-powered writing helper and proposal creator for tech blog guest authors and freelancers. Generates outlines, human-toned drafts, and winning Upwork proposals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
