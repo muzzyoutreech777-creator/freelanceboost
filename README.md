@@ -77,7 +77,7 @@ Designed with **zero backend**, full client-side execution, and seamless deploym
 
 ## 🔒 Security & Privacy: Client-Side API Key
 
-- Powered by the **Gemini API** (`gemini-2.5-flash` or custom model).
+- Powered by the **Gemini API** (`gemini-3.8-flash` or custom model).
 - The user's API key is entered in the Settings modal and stored **exclusively in the browser's `localStorage`**.
 - Zero backend servers, proxies, or telemetry intercept your key.
 - Direct client-side calls to `https://generativelanguage.googleapis.com/v1beta/models/...`.

@@ -144,7 +144,7 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, onClose, onKeyUpdated }
               onChange={(e) => setModel(e.target.value)}
               className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-all cursor-pointer"
             >
-              <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended: Fast &amp; High Quality)</option>
+              <option value="gemini-3.8-flash">gemini-3.8-flash (Recommended: Fast &amp; High Quality)</option>
               <option value="gemini-2.0-flash">gemini-2.0-flash (Fast &amp; Efficient)</option>
               <option value="gemini-1.5-flash">gemini-1.5-flash (Standard Lightweight)</option>
               <option value="gemini-2.5-pro">gemini-2.5-pro (Deep Reasoning &amp; Analysis)</option>

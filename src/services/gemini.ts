@@ -12,7 +12,7 @@ import {
 
 const STORAGE_KEY = 'freelanceboost_api_key';
 const MODEL_KEY = 'freelanceboost_model';
-export const DEFAULT_MODEL = 'gemini-2.5-flash';
+export const DEFAULT_MODEL = 'gemini-3.8-flash';
 
 export function getStoredApiKey(): string {
   if (typeof window === 'undefined') return '';
@@ -31,7 +31,13 @@ export function setStoredApiKey(key: string): void {
 
 export function getStoredModel(): string {
   if (typeof window === 'undefined') return DEFAULT_MODEL;
-  return localStorage.getItem(MODEL_KEY) || DEFAULT_MODEL;
+  const stored = localStorage.getItem(MODEL_KEY);
+  // If user has an old or retired model (like gemini-2.5-flash), replace it with gemini-3.8-flash automatically
+  if (!stored || stored === 'gemini-2.5-flash' || stored.includes('2.5-flash')) {
+    localStorage.setItem(MODEL_KEY, DEFAULT_MODEL);
+    return DEFAULT_MODEL;
+  }
+  return stored;
 }
 
 export function setStoredModel(model: string): void {
