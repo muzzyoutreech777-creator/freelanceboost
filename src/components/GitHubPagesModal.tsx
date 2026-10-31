@@ -42,6 +42,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
 
       - name: Install dependencies
         run: |
@@ -53,9 +58,8 @@ jobs:
 
       - name: Build static site
         run: npm run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+        env:
+          BASE_PATH: \${{ steps.pages.outputs.base_path }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

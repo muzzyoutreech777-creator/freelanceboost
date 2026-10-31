@@ -4,8 +4,13 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // Support GitHub Pages repository path or relative path
+  // If BASE_PATH is provided by actions/configure-pages or GITHUB_REPOSITORY is set
+  const repoName = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.split('/')[1] : '';
+  const basePath = process.env.BASE_PATH || (repoName ? `/${repoName}/` : './');
+
   return {
-    base: './', // Ensures assets load correctly on GitHub Pages under any repository path
+    base: basePath,
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
