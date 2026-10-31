@@ -84,18 +84,19 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, onClose, onKeyUpdated }
           </div>
 
           {/* API Key Input */}
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 Gemini API Key
               </label>
               <a
-                href="https://aistudio.google.com/app/apikey"
+                href="https://aistudio.google.com/apikey"
                 target="_blank"
-                rel="noreferrer"
-                className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/60 transition-colors"
               >
-                Get free key on Google AI Studio <ExternalLink className="w-3 h-3" />
+                <span>Get Free Key</span>
+                <ExternalLink className="w-3 h-3" />
               </a>
             </div>
             <div className="relative">
@@ -118,9 +119,19 @@ export const SettingsModal: React.FC<Props> = ({ isOpen, onClose, onKeyUpdated }
                 {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
-              Google AI Studio provides a free tier with high quotas. No credit card required.
-            </p>
+
+            {/* 4-Step Guide */}
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+              <span className="font-semibold text-slate-800 dark:text-slate-200 block text-[11px] uppercase tracking-wider">
+                How to get your free key:
+              </span>
+              <ol className="space-y-1 text-slate-600 dark:text-slate-400 text-xs leading-relaxed list-decimal pl-4">
+                <li>Click <strong>Get Free Key</strong> and sign in with Google.</li>
+                <li>Click <strong>Create API key</strong>.</li>
+                <li>Click the copy icon.</li>
+                <li>Paste it here and click <strong>Save Key</strong>.</li>
+              </ol>
+            </div>
           </div>
 
           {/* Model Selector */}

@@ -83,9 +83,9 @@ export default function App() {
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <a
-                href="https://aistudio.google.com/app/apikey"
+                href="https://aistudio.google.com/apikey"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="px-3 py-1.5 text-xs font-semibold text-amber-800 dark:text-amber-300 hover:underline flex items-center gap-1"
               >
                 Get Free Key <ExternalLink className="w-3 h-3" />

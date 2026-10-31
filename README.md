@@ -81,7 +81,7 @@ Designed with **zero backend**, full client-side execution, and seamless deploym
 - The user's API key is entered in the Settings modal and stored **exclusively in the browser's `localStorage`**.
 - Zero backend servers, proxies, or telemetry intercept your key.
 - Direct client-side calls to `https://generativelanguage.googleapis.com/v1beta/models/...`.
-- If you don't have a Gemini API key yet, get a free one in 30 seconds at [Google AI Studio](https://aistudio.google.com/app/apikey).
+- If you don't have a Gemini API key yet, get a free one in 30 seconds at [Google AI Studio](https://aistudio.google.com/apikey).
 
 ---
 
