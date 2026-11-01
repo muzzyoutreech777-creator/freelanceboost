@@ -1,6 +1,7 @@
 import React from 'react';
 import { PenSquare, Send, Settings, Moon, Sun, Github, FileCode, CheckCircle2, Sparkles, AlertCircle } from 'lucide-react';
 import { ActiveTab } from '../types';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface Props {
   activeTab: ActiveTab;
@@ -84,6 +85,9 @@ export const Navbar: React.FC<Props> = ({
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-2">
+            {/* PWA Install Button */}
+            <PWAInstallButton variant="navbar" />
+
             {/* Deploy Guide button */}
             <button
               onClick={onOpenDeployModal}

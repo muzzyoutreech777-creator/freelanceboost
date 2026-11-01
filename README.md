@@ -75,6 +75,14 @@ Designed with **zero backend**, full client-side execution, and seamless deploym
 
 ---
 
+### 📱 Installable Progressive Web App (PWA)
+- **Standalone App Experience**: Install FreelanceBoost directly onto your desktop (macOS / Windows / Linux) or mobile device (iOS / Android) with zero browser address bar clutter.
+- **Manifest (`manifest.webmanifest`)**: Includes brand name, icons (192px, 512px, maskable), theme color (`#4f46e5`), and standalone display mode.
+- **Offline Shell Caching**: Powered by `sw.js` with relative scope handling for smooth GitHub Pages compatibility, pre-caching core assets while keeping live Gemini API calls fresh.
+- **In-App Install Prompt**: Built-in "Install App" button in the navigation header with step-by-step guidance for iOS Safari and desktop browsers.
+
+---
+
 ## 🔒 Security & Privacy: Client-Side API Key
 
 - Powered by the **Gemini API** (`gemini-3.8-flash` or custom model).

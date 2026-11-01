@@ -5,6 +5,7 @@ import { TabProposalWriter } from './components/TabProposalWriter';
 import { TabEditPolish } from './components/TabEditPolish';
 import { SettingsModal } from './components/SettingsModal';
 import { GitHubPagesModal } from './components/GitHubPagesModal';
+import { OfflineIndicator } from './components/OfflineIndicator';
 import { ActiveTab } from './types';
 import { getStoredApiKey } from './services/gemini';
 import { Sparkles, Key, ExternalLink, Github, Heart, Shield } from 'lucide-react';
@@ -165,6 +166,9 @@ export default function App() {
         isOpen={isDeployModalOpen}
         onClose={() => setIsDeployModalOpen(false)}
       />
+
+      {/* PWA Offline Connectivity Indicator */}
+      <OfflineIndicator />
     </div>
   );
 }
