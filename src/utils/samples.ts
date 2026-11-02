@@ -73,3 +73,16 @@ export const CHECKLIST_ITEMS = [
     description: 'Complies with target publication word count, formatting (headings, code blocks), and style rules.',
   },
 ] as const;
+
+export const SAMPLE_FACT_CHECK_DRAFT = `Next.js 15 was officially released on October 21, 2024, introducing React 19 support and async request APIs. According to the 2024 State of React survey, over 68% of production React applications now use Next.js or Remix for server-side rendering.
+
+When migrating our application from Next.js 14.2 to Next.js 15.0, fetch requests are no longer cached by default, which initially caused an 85% increase in origin database queries until we added explicit cache tags. Furthermore, Node.js 18.18 is now the minimum required runtime.
+
+In our production testing across 12,000 requests, switching to Server Actions reduced client bundle size by 34kB (a 42% decrease) and improved our Time to First Byte (TTFB) to 140ms on Edge runtime.`;
+
+export const SAMPLE_EDITORIAL_GUIDELINES = `1. Target Word Count: 1,200 to 1,800 words.
+2. Headings: Use clear H2 and H3 markdown headings. Every major section should feature a code snippet or practical benchmark.
+3. Tone: Authoritative, pragmatic, and developer-to-developer. Avoid hype, marketing buzzwords ("revolutionary", "game-changer"), and passive voice.
+4. Links & Citations: Every statistical claim or version release must link directly to official documentation or source GitHub repositories. Minimum 3 outbound technical reference links.
+5. Code Formatting: All TypeScript snippets must specify type annotations and file names above the block.`;
+

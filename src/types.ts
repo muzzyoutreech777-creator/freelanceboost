@@ -51,7 +51,7 @@ export interface QualityChecklist {
   followsGuidelines: boolean;
 }
 
-export type ActiveTab = 'article' | 'proposal' | 'polish';
+export type ActiveTab = 'article' | 'proposal' | 'polish' | 'quality';
 
 export type VoiceStyle = 
   | 'custom'
@@ -94,4 +94,33 @@ export interface PolishResult {
   suggestions: PolishSuggestion[];
   readability: ReadabilityMetrics;
   personalizedDraft?: string;
+}
+
+export type ClaimRisk = 'low' | 'medium' | 'high';
+
+export interface FactCheckClaim {
+  id: string;
+  claim: string;
+  risk: ClaimRisk;
+  whatToVerify: string;
+}
+
+export interface FactCheckResult {
+  claims: FactCheckClaim[];
+  disclaimer: string;
+}
+
+export interface EditorReviewCategory {
+  status: 'pass' | 'needs-fix' | 'warning';
+  finding: string;
+  recommendation: string;
+}
+
+export interface EditorReviewResult {
+  wordCount: EditorReviewCategory;
+  headings: EditorReviewCategory;
+  tone: EditorReviewCategory;
+  links: EditorReviewCategory;
+  formatting: EditorReviewCategory;
+  overallSummary: string;
 }

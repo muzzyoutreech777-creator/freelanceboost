@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { TabArticleHelper } from './components/TabArticleHelper';
 import { TabProposalWriter } from './components/TabProposalWriter';
 import { TabEditPolish } from './components/TabEditPolish';
+import { TabQualityCheck } from './components/TabQualityCheck';
 import { SettingsModal } from './components/SettingsModal';
 import { GitHubPagesModal } from './components/GitHubPagesModal';
 import { OfflineIndicator } from './components/OfflineIndicator';
@@ -121,6 +122,14 @@ export default function App() {
         {/* Tab 3: Edit & Polish */}
         {activeTab === 'polish' && (
           <TabEditPolish
+            hasApiKey={hasApiKey}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+          />
+        )}
+
+        {/* Tab 4: Quality Check */}
+        {activeTab === 'quality' && (
+          <TabQualityCheck
             hasApiKey={hasApiKey}
             onOpenSettings={() => setIsSettingsOpen(true)}
           />

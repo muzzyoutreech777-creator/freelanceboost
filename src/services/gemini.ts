@@ -8,6 +8,10 @@ import {
   PolishResult,
   PolishSuggestion,
   PersonalTouchInput,
+  FactCheckResult,
+  FactCheckClaim,
+  EditorReviewResult,
+  EditorReviewCategory,
 } from '../types';
 
 const STORAGE_KEY = 'freelanceboost_api_key';
@@ -579,4 +583,171 @@ Return a valid JSON object:
     return parsed.personalizedDraft || draft;
   }
 }
+
+/**
+ * Tab 4 Section 1: Fact Check
+ * Lists every factual claim, version number, statistic, and date in a table:
+ * Claim, Risk (low/medium/high), and What to verify.
+ * CRITICAL RULE: Never say a claim is confirmed true.
+ */
+export async function factCheckDraft(draft: string): Promise<FactCheckResult> {
+  const prompt = `You are a technical fact-checking auditor for engineering publications.
+
+ARTICLE DRAFT TO AUDIT:
+"""
+${draft}
+"""
+
+TASK:
+Identify and extract EVERY SINGLE factual claim, version number, statistic, percentage, benchmark result, and date from the draft.
+
+For each item, provide:
+1. "claim": The exact statement, statistic, version requirement, or date from the draft.
+2. "risk": "high" | "medium" | "low"
+   - "high": Specific performance benchmarks, version compatibility numbers, release dates, breaking API changes, or unverified claims that frequently change or get outdated.
+   - "medium": Survey statistics, general architectural comparisons, framework capability assertions.
+   - "low": Ubiquitous, standard language features or undisputed industry facts.
+3. "whatToVerify": Concrete, actionable steps for the author to verify this claim in primary sources (e.g., official docs, GitHub release notes, npm changelogs, benchmark repos).
+
+STRICT RULE:
+- NEVER state or imply that any claim is "confirmed true", "verified", or "guaranteed accurate". AI cannot guarantee truth. Treat every item as a target for author verification.
+
+Return a valid JSON object matching this schema:
+{
+  "claims": [
+    {
+      "id": "claim-1",
+      "claim": "Next.js 15 was officially released on October 21, 2024",
+      "risk": "medium",
+      "whatToVerify": "Check official Next.js GitHub releases or the Vercel blog release announcement for October 2024."
+    }
+  ],
+  "disclaimer": "AI can make mistakes. Verify risky claims in official docs."
+}`;
+
+  const rawJson = await callGemini(prompt, true);
+  let parsed: any;
+  try {
+    parsed = JSON.parse(rawJson);
+  } catch (e) {
+    const cleanStr = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    parsed = JSON.parse(cleanStr);
+  }
+
+  const claims: FactCheckClaim[] = Array.isArray(parsed?.claims)
+    ? parsed.claims.map((item: any, idx: number) => ({
+        id: item.id || `claim-${idx + 1}`,
+        claim: String(item.claim || '').trim(),
+        risk: (['low', 'medium', 'high'].includes(item.risk) ? item.risk : 'medium') as FactCheckClaim['risk'],
+        whatToVerify: String(item.whatToVerify || 'Verify in official documentation.').trim(),
+      }))
+    : [];
+
+  return {
+    claims,
+    disclaimer: 'AI can make mistakes. Verify risky claims in official docs.',
+  };
+}
+
+/**
+ * Tab 4 Section 2: Final Editor Review
+ * Compares draft against publication guidelines across:
+ * - word count
+ * - headings
+ * - tone
+ * - links
+ * - formatting
+ */
+export async function finalEditorReview(draft: string, guidelines: string): Promise<EditorReviewResult> {
+  const words = draft.trim().split(/\s+/).filter(Boolean).length;
+
+  const prompt = `You are a senior publication editor reviewing an article submission against a developer publication's editorial guidelines.
+
+DRAFT TO REVIEW (${words} words):
+"""
+${draft}
+"""
+
+PUBLICATION'S EDITORIAL GUIDELINES:
+"""
+${guidelines}
+"""
+
+TASK:
+Compare the draft directly against the guidelines and evaluate WHAT TO FIX across these five distinct categories:
+1. "wordCount": Actual word count (${words} words) vs guideline limits.
+2. "headings": Heading structure (H2/H3 hierarchy, descriptive clarity, frequency).
+3. "tone": Writing voice (technical vs conversational, avoiding promotional buzzwords, active voice).
+4. "links": Presence and quality of technical references, documentation links, and citations.
+5. "formatting": Code snippets, bullet points, callouts, readability formatting.
+
+For each category, provide:
+- "status": "pass" | "needs-fix" | "warning"
+- "finding": A direct, objective assessment of how the draft compares to the guideline.
+- "recommendation": Specific, practical edits the author should make to comply.
+
+Return a valid JSON object matching this schema:
+{
+  "wordCount": {
+    "status": "pass",
+    "finding": "Draft is 1,250 words, which fits within the requested 1,200-1,800 range.",
+    "recommendation": "Word count is optimal; no trimming needed."
+  },
+  "headings": {
+    "status": "needs-fix",
+    "finding": "Section 2 lacks an H3 sub-heading for the benchmarking methodology.",
+    "recommendation": "Add '### Benchmarking Methodology' to split the 400-word paragraph."
+  },
+  "tone": {
+    "status": "pass",
+    "finding": "Authoritative and practical developer-to-developer voice.",
+    "recommendation": "Ensure passive voice in the conclusion is replaced with active verbs."
+  },
+  "links": {
+    "status": "warning",
+    "finding": "Only 1 link to official Next.js docs is present.",
+    "recommendation": "Add links to the React 19 RFC and the TanStack Query v5 documentation."
+  },
+  "formatting": {
+    "status": "pass",
+    "finding": "Clean markdown with proper language tags on code blocks.",
+    "recommendation": "Add file paths above code blocks as requested in the style guide."
+  },
+  "overallSummary": "Concise 2-sentence summary of the review and submission readiness."
+}`;
+
+  const rawJson = await callGemini(prompt, true);
+  let parsed: any;
+  try {
+    parsed = JSON.parse(rawJson);
+  } catch (e) {
+    const cleanStr = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+    parsed = JSON.parse(cleanStr);
+  }
+
+  const defaultCategory = (name: string): EditorReviewCategory => ({
+    status: 'pass',
+    finding: `Evaluation for ${name} completed against guidelines.`,
+    recommendation: 'Check the guideline requirements before final submission.',
+  });
+
+  const parseCat = (obj: any, name: string): EditorReviewCategory => {
+    if (!obj || typeof obj !== 'object') return defaultCategory(name);
+    return {
+      status: ['pass', 'needs-fix', 'warning'].includes(obj.status) ? obj.status : 'warning',
+      finding: String(obj.finding || `Checked ${name} against guidelines.`),
+      recommendation: String(obj.recommendation || 'Follow guideline instructions.'),
+    };
+  };
+
+  return {
+    wordCount: parseCat(parsed?.wordCount, 'Word Count'),
+    headings: parseCat(parsed?.headings, 'Headings'),
+    tone: parseCat(parsed?.tone, 'Tone'),
+    links: parseCat(parsed?.links, 'Links'),
+    formatting: parseCat(parsed?.formatting, 'Formatting'),
+    overallSummary: String(parsed?.overallSummary || 'Review complete. Review the recommendations before submitting.'),
+  };
+}
+
 

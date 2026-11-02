@@ -75,6 +75,25 @@ Designed with **zero backend**, full client-side execution, and seamless deploym
 
 ---
 
+### 🛡️ Tab 4: Quality Check
+- **Section 1: Fact Check & Technical Claims Audit**:
+  - Automatically identifies and audits every factual claim, framework version number, statistic, percentage, benchmark result, and date.
+  - Generates a structured table with columns: **Claim**, **Risk** (Low / Medium / High), and **What to verify**.
+  - Strict editorial rule: Never marks a claim as guaranteed or confirmed true.
+  - Prominent guidance note: *"AI can make mistakes. Verify risky claims in official docs."*
+  - Includes a one-click **Copy Claims Table** button.
+- **Section 2: Final Editor Review & Guidelines Audit**:
+  - Compares the draft against the target publication's editorial guidelines.
+  - Evaluates and lists what to fix across 5 specific categories:
+    1. **Word Count & Scope**
+    2. **Headings & Hierarchy**
+    3. **Tone & Publication Voice**
+    4. **Documentation & Links**
+    5. **Code Formatting & Presentation**
+  - Includes a one-click **Copy Review** button.
+
+---
+
 ### 📱 Installable Progressive Web App (PWA)
 - **Standalone App Experience**: Install FreelanceBoost directly onto your desktop (macOS / Windows / Linux) or mobile device (iOS / Android) with zero browser address bar clutter.
 - **Manifest (`manifest.webmanifest`)**: Includes brand name, icons (192px, 512px, maskable), theme color (`#4f46e5`), and standalone display mode.
